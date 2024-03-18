@@ -12,6 +12,7 @@ dependencies:
   dio: ^5.4.1
   auto_route: ^7.9.0
   flutter_secure_storage: ^9.0.0
+  dartz: ^0.10.1
   oauth2: ^2.0.2
   flutter_hooks: ^0.20.5
   hooks_riverpod: ^2.5.1
