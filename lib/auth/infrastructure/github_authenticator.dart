@@ -1,6 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:repo_viewer/auth/infrastructure/credentials_storage/credentials_storage.dart';
+import 'package:http/http.dart' as http;
+
+class GithubHttpClient extends http.BaseClient {
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    request.headers.addAll({'Content-Type': 'application/json'});
+    return request.send();
+  }
+}
 
 class GithubAuthenticator {
   const GithubAuthenticator(this._credentialsStorage);
@@ -14,7 +24,7 @@ class GithubAuthenticator {
       Uri.parse('https://github.com/login/oauth/auhorize');
   static final tokenEndpoint =
       Uri.parse('https://github.com/login/oauth/auhorize');
-  static final redirectUrl = Uri.parse('http://localhost:3000/callback');
+  static final redirectUri = Uri.parse('http://localhost:3000/callback');
 
   Future<Credentials?> getSignedInCredentials() async {
     try {
@@ -34,4 +44,18 @@ class GithubAuthenticator {
 
   Future<bool> isSignedIn() =>
       getSignedInCredentials().then((credentials) => credentials != null);
+
+  AuthorizationCodeGrant createGrant(Credentials credentials) {
+    return AuthorizationCodeGrant(
+        clientId,
+        authorizationEndpoint,
+        tokenEndpoint,
+        secret: clientSecret,
+        httpClient: GithubHttpClient(),
+      );
+  }
+
+  Uri getAuthorizeUri(AuthorizationCodeGrant grant) {
+    return grant.getAuthorizationUrl(redirectUri, scopes: scopes);
+  }
 }
