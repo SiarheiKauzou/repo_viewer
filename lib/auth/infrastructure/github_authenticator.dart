@@ -1,18 +1,19 @@
-import 'dart:ffi';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:repo_viewer/auth/domain/auth_failure.dart';
 import 'package:repo_viewer/auth/infrastructure/credentials_storage/credentials_storage.dart';
 import 'package:http/http.dart' as http;
 
-class GithubHttpClient extends http.BaseClient {
+class GithubOAuthHttpClient extends http.BaseClient {
+  final httpClient = http.Client();
+
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
-    request.headers.addAll({'Content-Type': 'application/json'});
-    return request.send();
+    request.headers.addAll({'Accept': 'application/json'});
+    return httpClient.send(request);
   }
 }
 
@@ -55,7 +56,7 @@ class GithubAuthenticator {
       authorizationEndpoint,
       tokenEndpoint,
       secret: clientSecret,
-      httpClient: GithubHttpClient(),
+      httpClient: GithubOAuthHttpClient(),
     );
   }
 
