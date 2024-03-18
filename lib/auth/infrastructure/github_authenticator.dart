@@ -98,17 +98,23 @@ class GithubAuthenticator {
         stringToBase64.encode('$clientSecret:$clientSecret');
 
     try {
-      await _dio.deleteUri(
-        revocationEndpoint,
-        data: {
-          'access_token': accessToken,
-        },
-        options: Options(
-          headers: {
-            'Authorization': 'basic $usernameAndPassword',
+      try {
+        _dio.deleteUri(
+          revocationEndpoint,
+          data: {
+            'access_token': accessToken,
           },
-        ),
-      );
+          options: Options(
+            headers: {
+              'Authorization': 'basic $usernameAndPassword',
+            },
+          ),
+        );
+      } on DioException catch (e) {
+        if (e.type != DioExceptionType.connectionError) {
+          rethrow;
+        }
+      }
 
       await _credentialsStorage.clear();
 
