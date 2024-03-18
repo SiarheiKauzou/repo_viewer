@@ -8,7 +8,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(
@@ -19,7 +19,7 @@ class SplashPage extends StatelessWidget {
               size: 150,
             ),
             const SizedBox(height: 16),
-            const LinearProgressIndicator(),
+            const LinearProgressIndicator(color: Colors.green),
           ],
         ),
       ),
