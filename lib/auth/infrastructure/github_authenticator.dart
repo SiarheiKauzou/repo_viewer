@@ -58,7 +58,7 @@ class GithubAuthenticator {
   Future<bool> isSignedIn() =>
       getSignedInCredentials().then((credentials) => credentials != null);
 
-  AuthorizationCodeGrant createGrant(Credentials credentials) {
+  AuthorizationCodeGrant createGrant() {
     return AuthorizationCodeGrant(
       clientId,
       authorizationEndpoint,
