@@ -7,6 +7,15 @@ class GithubAuthenticator {
 
   final CredentialsStorage _credentialsStorage;
 
+  static const clientId = 'ef79216ecc49e3a6ecef';
+  static const clientSecret = 'c8398cd1ff9ec7c0cf5737fe6d41737e7a7ed113';
+  static const scopes = ['read:user', 'repo'];
+  static final authorizationEndpoint =
+      Uri.parse('https://github.com/login/oauth/auhorize');
+  static final tokenEndpoint =
+      Uri.parse('https://github.com/login/oauth/auhorize');
+  static final redirectUrl = Uri.parse('http://localhost:3000/callback');
+
   Future<Credentials?> getSignedInCredentials() async {
     try {
       final storedCredentials = await _credentialsStorage.read();
