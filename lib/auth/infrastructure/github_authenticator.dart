@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:repo_viewer/auth/domain/auth_failure.dart';
 import 'package:repo_viewer/auth/infrastructure/credentials_storage/credentials_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:repo_viewer/core/shared/encoders.dart';
 
 class GithubOAuthHttpClient extends http.BaseClient {
   final httpClient = http.Client();
@@ -18,8 +21,9 @@ class GithubOAuthHttpClient extends http.BaseClient {
 }
 
 class GithubAuthenticator {
-  const GithubAuthenticator(this._credentialsStorage);
+  const GithubAuthenticator(this._dio, this._credentialsStorage);
 
+  final Dio _dio;
   final CredentialsStorage _credentialsStorage;
 
   static const clientId = 'ef79216ecc49e3a6ecef';
@@ -29,6 +33,8 @@ class GithubAuthenticator {
       Uri.parse('https://github.com/login/oauth/auhorize');
   static final tokenEndpoint =
       Uri.parse('https://github.com/login/oauth/auhorize');
+  static final revocationEndpoint =
+      Uri.parse('http://api.github.com/aplications/$clientId/token');
   static final redirectUri = Uri.parse('http://localhost:3000/callback');
 
   Future<Credentials?> getSignedInCredentials() async {
@@ -78,6 +84,35 @@ class GithubAuthenticator {
       return left(const AuthFailure.storage());
     } on AuthorizationException catch (e) {
       return left(AuthFailure.server('${e.error}: ${e.description}'));
+    } on PlatformException {
+      return left(const AuthFailure.storage());
+    }
+  }
+
+  Future<Either<AuthFailure, Unit>> signOut() async {
+    final accessToken = await _credentialsStorage
+        .read()
+        .then((credentials) => credentials?.accessToken);
+
+    final usernameAndPassword =
+        stringToBase64.encode('$clientSecret:$clientSecret');
+
+    try {
+      await _dio.deleteUri(
+        revocationEndpoint,
+        data: {
+          'access_token': accessToken,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'basic $usernameAndPassword',
+          },
+        ),
+      );
+
+      await _credentialsStorage.clear();
+
+      return right(unit);
     } on PlatformException {
       return left(const AuthFailure.storage());
     }
