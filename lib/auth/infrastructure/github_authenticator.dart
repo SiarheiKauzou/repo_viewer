@@ -24,12 +24,12 @@ class GithubAuthenticator {
   final CredentialsStorage _credentialsStorage;
 
   static const clientId = 'ef79216ecc49e3a6ecef';
-  static const clientSecret = 'c8398cd1ff9ec7c0cf5737fe6d41737e7a7ed113';
+  static const clientSecret = 'ac46f892aee844941638a7d37eb5ec3664923212';
   static const scopes = ['read:user', 'repo'];
   static final authorizationEndpoint =
-      Uri.parse('https://github.com/login/oauth/auhorize');
+      Uri.parse('https://github.com/login/oauth/authorize');
   static final tokenEndpoint =
-      Uri.parse('https://github.com/login/oauth/auhorize');
+      Uri.parse('https://github.com/login/oauth/access_token');
   static final revocationEndpoint =
       Uri.parse('http://api.github.com/aplications/$clientId/token');
   static final redirectUri = Uri.parse('http://localhost:3000/callback');

@@ -39,7 +39,6 @@ class SignInPage extends ConsumerWidget {
                       ref.read(authNotifierProvider.notifier).signIn(
                     (uri) {
                       final completer = Completer<Uri>();
-
                       context.router.push(
                         AuthorizationRoute(
                           authorizationUri: uri,
@@ -47,7 +46,6 @@ class SignInPage extends ConsumerWidget {
                               completer.complete(uri),
                         ),
                       );
-
                       return completer.future;
                     },
                   ),
