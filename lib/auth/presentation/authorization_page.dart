@@ -20,13 +20,27 @@ class AuthorizationPage extends StatefulWidget {
 
 class _AuthorizationPageState extends State<AuthorizationPage> {
   late final WebViewController _controller;
+  bool _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: WebViewWidget(controller: _controller),
+        child: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_isLoading)
+              const Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Center(
+                    child: CircularProgressIndicator(color: Colors.green),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -44,6 +58,11 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
+        },
+        onPageFinished: (url) {
+          setState(() {
+            _isLoading = false;
+          });
         },
       ))
       ..clearCache()
