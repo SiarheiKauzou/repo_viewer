@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:repo_viewer/auth/shared/providers.dart';
+import 'package:repo_viewer/core/presentation/routes/app_router.dart';
 
 @RoutePage()
-class SignInPage extends StatelessWidget {
+class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -29,7 +35,22 @@ class SignInPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () =>
+                      ref.read(authNotifierProvider.notifier).signIn(
+                    (uri) {
+                      final completer = Completer<Uri>();
+
+                      context.router.push(
+                        AuthorizationRoute(
+                          authorizationUri: uri,
+                          onAuthorizationCodeRedirectAttemp: (uri) =>
+                              completer.complete(uri),
+                        ),
+                      );
+
+                      return completer.future;
+                    },
+                  ),
                   style: const ButtonStyle(
                     foregroundColor: MaterialStatePropertyAll(Colors.white),
                     backgroundColor: MaterialStatePropertyAll(Colors.green),
