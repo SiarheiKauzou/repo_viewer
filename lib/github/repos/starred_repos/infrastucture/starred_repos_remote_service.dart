@@ -7,7 +7,8 @@ class StarredReposRemoteService {
 
   final Dio _dio;
 
-  Future<RemoteResponse<List<GithubRepoDTO>>> getStarredReposPage(int page) async {
- 
+  Future<RemoteResponse<List<GithubRepoDTO>>> getStarredReposPage(
+      int page) async {
+    throw UnimplementedError();
   }
 }
