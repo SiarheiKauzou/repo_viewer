@@ -25,6 +25,7 @@ class StarredReposRemoteService {
     );
 
     final previousHeaders = await _headersCache.getHeaders(requestUri);
+    final maxPage = previousHeaders?.link?.maxPage ?? 0;
 
     try {
       final response = await _dio.getUri(
@@ -48,17 +49,17 @@ class StarredReposRemoteService {
             .map((e) => GithubRepoDTO.fromJson(e))
             .toList();
 
-        return RemoteResponse.withNewData(convertedData);
+        return RemoteResponse.withNewData(convertedData, maxPage: maxPage);
       }
 
       if (response.statusCode == 304) {
-        return const RemoteResponse.notModified();
+        return RemoteResponse.notModified(maxPage: maxPage);
       }
 
       throw RestApiExcepton(response.statusCode);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
-        return const RemoteResponse.noConnection();
+        return RemoteResponse.noConnection(maxPage: maxPage);
       } else if (e.response != null) {
         throw RestApiExcepton(e.response?.statusCode);
       } else {
