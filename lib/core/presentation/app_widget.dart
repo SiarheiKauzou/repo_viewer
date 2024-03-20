@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repo_viewer/auth/shared/providers.dart';
 import 'package:repo_viewer/core/presentation/routes/app_router.dart';
+import 'package:repo_viewer/core/shared/providers.dart';
 
 final initializationProvider = FutureProvider<void>(
   (ref) async {
-    final authNotifier = ref.read(authNotifierProvider.notifier);
+    await ref.read(sembastProvider).init();
+    final auth = ref.read(authNotifierProvider.notifier);
     await Future.delayed(Durations.extralong4);
-    await authNotifier.checkAndUpdateAuthenticationStatus();
+    await auth.checkAndUpdateAuthenticationStatus();
   },
 );
 
