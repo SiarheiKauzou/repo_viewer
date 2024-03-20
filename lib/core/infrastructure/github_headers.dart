@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'github_headers.freezed.dart';
+part 'github_headers.g.dart';
 
 @freezed
 class GithubHeaders with _$GithubHeaders {
@@ -12,15 +13,20 @@ class GithubHeaders with _$GithubHeaders {
     PaginationLink? link,
   }) = _GithubHeaders;
 
+  factory GithubHeaders.fromJson(Map<String, dynamic> json) =>
+      _$GithubHeadersFromJson(json);
+
   factory GithubHeaders.parse(Response response) {
     final link = response.headers.map['Link']?[0];
 
     return GithubHeaders(
       eTag: response.headers.map['ETag']?[0],
-      link: link == null ? null : PaginationLink.parse(
-        link.split(','),
-        requestUrl: response.requestOptions.uri.toString(),
-      ),
+      link: link == null
+          ? null
+          : PaginationLink.parse(
+              link.split(','),
+              requestUrl: response.requestOptions.uri.toString(),
+            ),
     );
   }
 }
@@ -44,6 +50,9 @@ class PaginationLink with _$PaginationLink {
       ),
     );
   }
+
+  factory PaginationLink.fromJson(Map<String, dynamic> json) =>
+      _$PaginationLinkFromJson(json);
 
   static int _extractPageNumber(String value) {
     final uriString = RegExp(

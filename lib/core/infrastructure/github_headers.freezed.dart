@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+GithubHeaders _$GithubHeadersFromJson(Map<String, dynamic> json) {
+  return _GithubHeaders.fromJson(json);
+}
+
 /// @nodoc
 mixin _$GithubHeaders {
   String? get eTag => throw _privateConstructorUsedError;
   PaginationLink? get link => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GithubHeadersCopyWith<GithubHeaders> get copyWith =>
       throw _privateConstructorUsedError;
@@ -118,9 +123,12 @@ class __$$GithubHeadersImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$GithubHeadersImpl extends _GithubHeaders {
   const _$GithubHeadersImpl({this.eTag, this.link}) : super._();
+
+  factory _$GithubHeadersImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GithubHeadersImplFromJson(json);
 
   @override
   final String? eTag;
@@ -141,6 +149,7 @@ class _$GithubHeadersImpl extends _GithubHeaders {
             (identical(other.link, link) || other.link == link));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, eTag, link);
 
@@ -149,12 +158,22 @@ class _$GithubHeadersImpl extends _GithubHeaders {
   @pragma('vm:prefer-inline')
   _$$GithubHeadersImplCopyWith<_$GithubHeadersImpl> get copyWith =>
       __$$GithubHeadersImplCopyWithImpl<_$GithubHeadersImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GithubHeadersImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _GithubHeaders extends GithubHeaders {
   const factory _GithubHeaders(
       {final String? eTag, final PaginationLink? link}) = _$GithubHeadersImpl;
   const _GithubHeaders._() : super._();
+
+  factory _GithubHeaders.fromJson(Map<String, dynamic> json) =
+      _$GithubHeadersImpl.fromJson;
 
   @override
   String? get eTag;
@@ -166,10 +185,15 @@ abstract class _GithubHeaders extends GithubHeaders {
       throw _privateConstructorUsedError;
 }
 
+PaginationLink _$PaginationLinkFromJson(Map<String, dynamic> json) {
+  return _PaginationLink.fromJson(json);
+}
+
 /// @nodoc
 mixin _$PaginationLink {
   int? get maxPage => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $PaginationLinkCopyWith<PaginationLink> get copyWith =>
       throw _privateConstructorUsedError;
@@ -242,9 +266,12 @@ class __$$PaginationLinkImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$PaginationLinkImpl extends _PaginationLink {
   const _$PaginationLinkImpl({this.maxPage}) : super._();
+
+  factory _$PaginationLinkImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PaginationLinkImplFromJson(json);
 
   @override
   final int? maxPage;
@@ -262,6 +289,7 @@ class _$PaginationLinkImpl extends _PaginationLink {
             (identical(other.maxPage, maxPage) || other.maxPage == maxPage));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, maxPage);
 
@@ -271,11 +299,21 @@ class _$PaginationLinkImpl extends _PaginationLink {
   _$$PaginationLinkImplCopyWith<_$PaginationLinkImpl> get copyWith =>
       __$$PaginationLinkImplCopyWithImpl<_$PaginationLinkImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PaginationLinkImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _PaginationLink extends PaginationLink {
   const factory _PaginationLink({final int? maxPage}) = _$PaginationLinkImpl;
   const _PaginationLink._() : super._();
+
+  factory _PaginationLink.fromJson(Map<String, dynamic> json) =
+      _$PaginationLinkImpl.fromJson;
 
   @override
   int? get maxPage;
