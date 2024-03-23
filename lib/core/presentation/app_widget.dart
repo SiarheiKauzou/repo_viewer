@@ -9,9 +9,10 @@ import 'package:repo_viewer/core/shared/providers.dart';
 final initializationProvider = FutureProvider<void>(
   (ref) async {
     await ref.read(sembastProvider).init();
-    final auth = ref.read(authNotifierProvider.notifier);
     await Future.delayed(Durations.extralong4);
-    await auth.checkAndUpdateAuthenticationStatus();
+    await ref
+        .read(authNotifierProvider.notifier)
+        .checkAndUpdateAuthenticationStatus();
   },
 );
 

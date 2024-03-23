@@ -1,5 +1,5 @@
-class RestApiExcepton implements Exception {
-  const RestApiExcepton(this.errorCode);
+class RestApiException implements Exception {
+  const RestApiException(this.errorCode);
 
   final int? errorCode;
 }
